@@ -13,3 +13,5 @@ A través de la interfaz de programación de aplicaciones (API), que es en lengu
 Otro aspecto importante de esta plataforma es la gran cantidad de procesos que se pueden realizar con los datos disponible. Desde crear bases de datos propias con procesos de selección personalizados, hasta realizar con imágenes diferentes tipos de clasificaciones. Esto puede realizarse, gracias a innumerables algoritmos implementados en la plataforma listos para facilitarles los pasos más comunes a los usuarios. Además, gracias la replicabilidad de los códigos, se pueden utilizar muchos pasos de los ejemplos que la propia plataforma proporciona o de procesos de otros trabajos.
 
 Por todo esto, el objetivo principal que se quiere remarcar en este capítulo es la polivalencia que esta plataforma proporciona a los usuarios que trabajan en teledetección. Permitiéndoles disponer de una herramienta de alta potencialidad para la extracción y procesado de múltiples tipos de información espacio-temporales.
+
+### 
