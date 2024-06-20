@@ -151,8 +151,6 @@ var sch =
           [-0.5125164883415891, 39.82132933160194],
           [-0.5348324673454954, 39.82291143770356]]]);
 
-var Comunidad = ee.FeatureCollection('ft:1oqdcvye4mQD4NJ9kRWNEIYcmAgJT2Q_mdij0PtX6');
-
 //Landsat8 colection
 var col1 = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR').filterBounds(sch)
 .filterDate('2017-06-01','2017-06-30');
@@ -161,12 +159,12 @@ var col2 = ee.ImageCollection('LANDSAT/LC08/C01/T1_SR').filterBounds(sch)
 print(col1,col2)
 
 //Month
-var juny = col1.mosaic().clip(Comunidad)
-var july = col2.mosaic().clip(Comunidad)
+var juny = col1.mosaic()
+var july = col2.mosaic()
 print(juny,july)
 //NBR
-var nbr1 = juny.normalizedDifference(['B5','B7']).rename('NBR');
-var nbr2 = july.normalizedDifference(['B5','B7']).rename('NBR');
+var nbr1 = juny.normalizedDifference(['SR_B5','SR_B7']).rename('NBR');
+var nbr2 = july.normalizedDifference(['SR_B5','SR_B7']).rename('NBR');
 print(nbr1,nbr2)
 
 //diference
