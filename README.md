@@ -107,3 +107,97 @@ print(sch,sch2)
 ```
 
 ![](./Auxiliares/sch.png)
+
+Y se pueden visualizar en pantalla. Se trata de aproximaciones al lugar donde ocurrió el incendio.
+
+```js
+Map.addLayer(sch);
+Map.addLayer(sch2);
+```
+
+![](./Auxiliares/sch_.png)
+
+A continuación se busca la colección de imágenes Landsat 8 de la zona para junio de 2017, previa al incendio, y julio del mismo año, posterior al incendio.
+
+```js
+//Landsat8 colection
+var col1 = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2').filterBounds(sch)
+.filterDate('2017-06-01','2017-06-30');
+var col2 = ee.ImageCollection('LANDSAT/LC08/C02/T1_L2').filterBounds(sch)
+.filterDate('2017-07-01','2017-07-31');
+print(col1,col2);
+```
+
+Existen 8 imágenes para cada uno de los meses, debido a que en la zona se situa el límite en la trayectoria de toma de datos satelitales. Esto puede observarse en el código con el que se nombran las imágenes. Después de *LC08_* le sigue un código de 6 cifras donde las 3 primeras se refieren al *path* de la imagen y las 3 siguientes al *row*. Los últimos 8 números del identificador de la imagen corresponden a la fecha en la que fue tomada en año-mes-día *yyyymmdd*.
+
+![](./Auxiliares/col.png)
+
+A continuación se mosaican las imágenes resultantes de las colecciones en cada mes para conseguir una única imagen del mes de junio y otra del mes de julio.
+
+```js
+//Month
+var juny = col1.mosaic()
+var july = col2.mosaic()
+print(juny,july)
+```
+
+Ahora ya se puede calcular el índice NBR para cada mes, tomando como referencia las bandas 5 y 7 para realizar la diferencia normalizada entre ambas y, posteriormente, se calcula la diferencia entre los meses.
+
+```js
+//NBR
+var nbr1 = juny.normalizedDifference(['SR_B5','SR_B7']).rename('NBR');
+var nbr2 = july.normalizedDifference(['SR_B5','SR_B7']).rename('NBR');
+print(nbr1,nbr2);
+
+//diference
+var dnbr = nbr1.subtract(nbr2)
+var color = {min: -0.3, max: 1.0, palette:['0000ff', '00ffff', 'ffff00', 'ff0000', 'ffffff'],};
+
+//Mapa
+Map.addLayer(dnbr, color, 'NBR');
+```
+
+![](./Auxiliares/dnbr.png)
+
+A continuación se crea una máscara en la que se seleccionan los valores de la diferencia de entre los índices NBR que son superiores a 0.1, que será donde se localice el incendio.
+
+```js
+//mascara
+var mask = dnbr.updateMask(dnbr.gte(0.10));
+print(mask);
+Map.addLayer(mask, color, 'NBR_mask');
+```
+
+![](./Auxiliares/mascara.png)
+
+Finalmente, se convierte este resultado a un polígono, transformando primero los valores del raster de la máscara a números enteros.
+
+```js
+//hacer banda con numero integro
+var banda = mask.expression(
+    'N/N', {
+      'N': mask.select('NBR')
+});
+banda = banda.toInt()
+print(banda,'index')
+
+
+// Convert the zones to vectors.
+var vectors = banda.reduceToVectors({
+  geometry: sch2,
+  crs: mask.projection(),
+  scale: 30,
+  geometryType: 'polygon',
+  eightConnected: false,
+  labelProperty: 'zone',
+  maxPixels: 5000000000
+});
+print(vectors)
+
+//Visualizar el poligono resultante
+var display = ee.Image(0).updateMask(0).paint(vectors, '000000', 3);
+Map.addLayer(display, {palette: '000000'}, 'Burned_Area');
+Map.centerObject(sch2);
+```
+
+![](./Auxiliares/resultado.png)
