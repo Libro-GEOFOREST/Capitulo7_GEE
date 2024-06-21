@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/817262961.svg)](https://zenodo.org/doi/10.5281/zenodo.12204983)
+
 Javier Pérez Romero
 
 # Capítulo 7: Google Earth Engine en Ciencias Forestales
