@@ -1,6 +1,6 @@
 Javier Pérez Romero
 
-# Capítulo 6: Google Earth Engine en Ciencias Forestales
+# Capítulo 7: Google Earth Engine en Ciencias Forestales
 
 ## 1. Temario introductorio a Google Earth Engine (GEE)
 
