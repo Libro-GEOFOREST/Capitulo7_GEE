@@ -18,7 +18,7 @@ Por todo esto, el objetivo principal que se quiere remarcar en este capítulo es
 
 En este ejercicio se va a determinar la superficie incendiada ocurrido en las inmendiaciones de Sot de Ferrer en el año 2017.
 
-Primero se introducen las coordenadas de referencia:
+Se crea un nuevo script en el panel de entorno de trabajo y se introducen las coordenadas de referencia en el editor de código del panel de programación, para seguidamente guardar en *Save* y ejecutar en *Run*.
 
 ```js
 var sch = 
@@ -100,7 +100,7 @@ var sch =
           [-0.5348324673454954, 39.82291143770356]]]);
 ```
 
-Cuando se imprimen las variables generadas *sch* y *sch2*, nos indica que se trata de geometrías poligonales:
+Cuando se imprimen las variables generadas *sch* y *sch2*, en la pestaña de consola del panel de información nos indica que se trata de geometrías poligonales:
 
 ```js
 print(sch,sch2)
@@ -108,7 +108,7 @@ print(sch,sch2)
 
 ![](./Auxiliares/sch.png)
 
-Y se pueden visualizar en pantalla. Se trata de aproximaciones al lugar donde ocurrió el incendio.
+Y se pueden visualizar en la ventana de mapa. Se trata de aproximaciones al lugar donde ocurrió el incendio.
 
 ```js
 Map.addLayer(sch);
